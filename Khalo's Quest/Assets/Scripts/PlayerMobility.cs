@@ -10,9 +10,12 @@ public class PlayerMobility : MonoBehaviour {
 
     void Update()
     {
-        pointTowardsMouse();
-        move();
-        shoot();
+        if (Time.deltaTime > 0)
+        {
+            pointTowardsMouse();
+            move();
+            shoot();
+        }
     }
 
     void pointTowardsMouse()
