@@ -11,5 +11,17 @@ public interface ICharacter {
     Vector2 getPosition();
 
     // character attacks
-    void attack(); 
+    void attack();
+
+    //getters for stats
+    int getHealth();
+    int getEnergy();
+    int getSpeed();
+    int getStamina();
+    int getKnowledge();
+    int getDurability();
+    int getStrength();
+
+    //returns the damage dealt to 
+    int damageDealt(ICharacter enemy);
 }
