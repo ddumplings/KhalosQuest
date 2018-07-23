@@ -17,8 +17,7 @@ public class PlayerMobility : MonoBehaviour {
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>(); // we are accessing the SpriteRenderer that is attached to the Gameobject
-        if (spriteRenderer.sprite == null) // if the sprite on spriteRenderer is null then
-            spriteRenderer.sprite = downSprite; // set the sprite to down
+        spriteRenderer.sprite = downSprite; // set the sprite to down
     }
 
     void Update()
