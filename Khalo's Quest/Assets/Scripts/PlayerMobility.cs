@@ -8,6 +8,19 @@ public class PlayerMobility : MonoBehaviour {
     private List<GameObject> projectiles = new List<GameObject>();
     public float projectileVelocity;
 
+    public Sprite leftSprite;
+    public Sprite rightSprite;
+    public Sprite upSprite;
+    public Sprite downSprite;
+    private SpriteRenderer spriteRenderer;
+
+    void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>(); // we are accessing the SpriteRenderer that is attached to the Gameobject
+        if (spriteRenderer.sprite == null) // if the sprite on spriteRenderer is null then
+            spriteRenderer.sprite = downSprite; // set the sprite to down
+    }
+
     void Update()
     {
         if (Time.deltaTime > 0)
@@ -23,15 +36,59 @@ public class PlayerMobility : MonoBehaviour {
         Vector3 mousePosition = Input.mousePosition;
         mousePosition.z = Camera.main.nearClipPlane;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(mousePosition);
-        Vector2 direction = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
+        Vector2 direction = (Vector2)((mousePos - transform.position));
+        direction.Normalize();
 
-        //make it so that it uses the different sprites to change direction instead of rotating thing
-        /*if (direction.x)
+        //make it so that it uses the different sprites to change direction
+        if (direction.x > 0)
         {
-
-        }*/
-
-        transform.up = direction;
+            if (direction.y > 0)
+            {
+                if (direction.y > direction.x)
+                {
+                    spriteRenderer.sprite = upSprite;
+                } else
+                {
+                    spriteRenderer.sprite = rightSprite;
+                }
+            }
+            else //y <= 0
+            {
+                if (System.Math.Abs(direction.y) > direction.x)
+                {
+                    spriteRenderer.sprite = downSprite;
+                }
+                else
+                {
+                    spriteRenderer.sprite = rightSprite;
+                }
+            }
+        }
+        else //x <= 0
+        {
+            if (direction.y > 0)
+            {
+                if (direction.y > System.Math.Abs(direction.x))
+                {
+                    spriteRenderer.sprite = upSprite;
+                }
+                else
+                {
+                    spriteRenderer.sprite = leftSprite;
+                }
+            }
+            else //y <= 0
+            {
+                if (System.Math.Abs(direction.y) > System.Math.Abs(direction.x))
+                {
+                    spriteRenderer.sprite = downSprite;
+                }
+                else
+                {
+                    spriteRenderer.sprite = leftSprite;
+                }
+            }
+        }
     }
 
     void move()
@@ -52,7 +109,7 @@ public class PlayerMobility : MonoBehaviour {
             direction.Normalize();
             GameObject bullet = (GameObject)Instantiate(
                                  projectilePrefab,
-                                 transform.position + (Vector3)(direction * 70f),
+                                 transform.position + (Vector3)(direction * 50f),
                                  Quaternion.identity);
             bullet.GetComponent<Rigidbody2D>().velocity = direction * projectileVelocity;
 
