@@ -6,7 +6,7 @@ public class PlayerMobility : MonoBehaviour {
     public float speed;
     public GameObject projectilePrefab;
     private List<GameObject> projectiles = new List<GameObject>();
-    private float projectileVelocity = 100;
+    public float projectileVelocity;
 
     void Update()
     {
@@ -24,6 +24,13 @@ public class PlayerMobility : MonoBehaviour {
         mousePosition.z = Camera.main.nearClipPlane;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(mousePosition);
         Vector2 direction = new Vector2(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
+
+        //make it so that it uses the different sprites to change direction instead of rotating thing
+        /*if (direction.x)
+        {
+
+        }*/
+
         transform.up = direction;
     }
 
@@ -36,15 +43,19 @@ public class PlayerMobility : MonoBehaviour {
 
     void shoot()
     {
-        if (Input.GetButtonDown("Fire1")) //&& Time.time > timeUntilFire)
+        if (Input.GetButtonDown("Fire1"))
         {
-            //timeUntilFire = Time.time + 1 / fireRate;
-            GameObject bullet = (GameObject)Instantiate(projectilePrefab, transform.position, transform.rotation);
-            /*Vector3 mousePosition = Input.mousePosition;
+            Vector3 mousePosition = Input.mousePosition;
             mousePosition.z = Camera.main.nearClipPlane;
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(mousePosition);
-            GameObject bullet = (GameObject)Instantiate(projectilePrefab, transform.position, new Quaternion(mousePos.x, mousePos.y, transform.rotation.z, Quaternion.identity.w));
-            */
+            Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(mousePosition);
+            Vector2 direction = (Vector2)((worldMousePos - transform.position));
+            direction.Normalize();
+            GameObject bullet = (GameObject)Instantiate(
+                                 projectilePrefab,
+                                 transform.position + (Vector3)(direction * 70f),
+                                 Quaternion.identity);
+            bullet.GetComponent<Rigidbody2D>().velocity = direction * projectileVelocity;
+
             projectiles.Add(bullet);
         }
 
@@ -53,7 +64,6 @@ public class PlayerMobility : MonoBehaviour {
             GameObject goBullet = projectiles[i];
             if (goBullet != null)
             {
-                goBullet.transform.Translate(new Vector3(0, 1) * Time.deltaTime * projectileVelocity);
                 Vector3 bulletScreenPosn = Camera.main.WorldToScreenPoint(goBullet.transform.position);
                 if (bulletScreenPosn.y >= Screen.height || bulletScreenPosn.x >= Screen.width
                     || bulletScreenPosn.y <= 0 || bulletScreenPosn.x <= 0)
