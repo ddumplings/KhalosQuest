@@ -1,21 +1,35 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public abstract class ACharacter : ICharacter
+public abstract class ACharacter : MonoBehaviour, ICharacter
 {
     // basic stats
-    private int health;
-    private int energy;
-    private int speed;
-    private int stamina;
-    private int knowledge;
-    private int durability;
-    private int strength;
+    [SerializeField] private int health;
+    [SerializeField] private int energy;
+    [SerializeField] private int speed;
+    [SerializeField] private int stamina;
+    [SerializeField] private int knowledge;
+    [SerializeField] private int durability;
+    [SerializeField] private int strength;
+    [SerializeField] private List<IItem> items;
 
     public abstract void attack();
     public abstract Vector2 getPosition();
     public abstract void move();
+
+    /*public ACharacter(int health, int energy, int speed, int stamina, int knowledge, int durability, int strength)
+    {
+        this.health = health;
+        this.energy = energy;
+        this.speed = speed;
+        this.stamina = stamina;
+        this.knowledge = knowledge;
+        this.durability = durability;
+        this.strength = strength;
+        //
+    }*/
 
     public int getHealth()
     {
@@ -59,5 +73,50 @@ public abstract class ACharacter : ICharacter
         throw new System.NotImplementedException();
     }
 
+    public void takeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            //Destroy(gameObject);
+            //SceneManager.LoadScene("GameOver");
+            Debug.Log("You died!");
+        }
+        Debug.Log(health);
+    }
 
+    public void setHealth(int health)
+    {
+        this.health = health;
+    }
+
+    public void setEnergy(int energy)
+    {
+        this.energy = energy;
+    }
+
+    public void setSpeed(int speed)
+    {
+        this.speed = speed;
+    }
+
+    public void setStamina(int stamina)
+    {
+        this.stamina = stamina;
+    }
+
+    public void setKnowledge(int knowledge)
+    {
+        this.knowledge = knowledge;
+    }
+
+    public void setDurability(int durability)
+    {
+        this.durability = durability;
+    }
+
+    public void setStrength(int strength)
+    {
+        this.strength = strength;
+    }
 }

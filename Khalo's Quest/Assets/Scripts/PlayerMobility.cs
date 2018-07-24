@@ -95,6 +95,7 @@ public class PlayerMobility : MonoBehaviour {
         float xAxis = Input.GetAxis("Horizontal");
         float yAxis = Input.GetAxis("Vertical");
         transform.Translate(xAxis * speed, yAxis * speed, 0, Space.World);
+        //GetComponent<Rigidbody2D>().AddForce(new Vector2(xAxis * speed, yAxis * speed), ForceMode2D.Force);
     }
 
     void shoot()

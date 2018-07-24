@@ -22,6 +22,15 @@ public interface ICharacter {
     int getDurability();
     int getStrength();
 
+    //setters for stats
+    void setHealth(int health);
+    void setEnergy(int energy);
+    void setSpeed(int speed);
+    void setStamina(int stamina);
+    void setKnowledge(int knowledge);
+    void setDurability(int durability);
+    void setStrength(int strength);
+
     //returns the damage dealt to 
     int damageDealt(ICharacter enemy);
 }
